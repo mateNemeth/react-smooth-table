@@ -61,7 +61,7 @@ const ActionHeaderComponent = () => {
         style={{ marginRight: '4px' }}
         data-testid="default-header-icon"
       />
-      Új tétel
+      Add new
     </Text>
   );
 };
@@ -69,8 +69,8 @@ const ActionHeaderComponent = () => {
 ActionHeader.propTypes = {
   onAdd: PropTypes.shape({
     component: PropTypes.shape({}),
-    callBack: PropTypes.func.isRequired
-  })
+    callBack: PropTypes.func.isRequired,
+  }),
 };
 
 export default ActionHeader;
