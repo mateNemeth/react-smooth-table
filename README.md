@@ -12,7 +12,7 @@ Fast and easily configurable tables in React. Has some built-in, easy to use API
 ## Installation
 
 ```sh
-TODO
+npm install [--save] react-smooth-table
 ```
 
 ## Basic usage
