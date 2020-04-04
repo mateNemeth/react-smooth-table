@@ -51,5 +51,15 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateNemeth/react-smooth-table"
+  },
+  "author": "Mate Nemeth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mateNemeth/react-smooth-table/issues"
+  },
+  "homepage": "https://github.com/mateNemeth/react-smooth-table"
 }
