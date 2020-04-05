@@ -87,24 +87,24 @@ There are 3 basic "editing" options: adding, removing, and editing the table row
 
 ```jsx
 const editComponents = {
-	onEdit: {
-   		component: <WhateverCustomButtonOrIcon />,
-      		callBack: (rowData) => {
-      			// Talk to the backend here maybe.
-      		};
-  	},
-  	onDelete: {
-  		component: <WhateverCustomButtonOrIcon />,
-      		callBack: (rowData) => {
-      			// Talk to the backend here maybe.
-      		};
-  	},
-  	onAdd: {
-    		component: <WhateverCustomButtonOrIcon />,
-      		callBack: (rowData) => {
-        		// Talk to the backend here maybe.
-      		};
-  	}
+  onEdit: {
+    component: <WhateverCustomButtonOrIcon />,
+    callBack: (rowData) => {
+      // Talk to the backend here maybe.
+    };
+  },
+  onDelete: {
+    component: <WhateverCustomButtonOrIcon />,
+    callBack: (rowData) => {
+      // Talk to the backend here maybe.
+    };
+  },
+  onAdd: {
+    component: <WhateverCustomButtonOrIcon />,
+      callBack: (rowData) => {
+        // Talk to the backend here maybe.
+      };
+  }
 };
 ```
 
