@@ -106,6 +106,9 @@ const editComponents = {
       };
   }
 };
+
+// And later when you call the Table component:
+<Table columns={columns} data={data} editable editComponents={editComponents} />
 ```
 
 **Note**: Each one of these editing options are optional, you can have either one, or all of them as you wish.
