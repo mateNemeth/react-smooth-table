@@ -1,6 +1,6 @@
 # React-Smooth-Table
 
-Fast and easily configurable tables in React. Has some built-in, easy to use APIs, but also fully configurable.
+Fast and easily configurable tables in React. Has some built-in, easy to use APIs, but also fully customizable.
 
 ## Table of Contents
 
