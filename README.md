@@ -86,7 +86,11 @@ Possible props for the column object:
 
 ```jsx
   const columns = {
-    {headerFor: 'avatar', title: 'Avatar', component: (rowData) => (rowData.avatar && <img src={rowData.avatar} alt="avatar_image" />)}
+    {
+      headerFor: 'avatar',
+      title: 'Avatar',
+      component: (rowData) => (rowData.avatar && <img src={rowData.avatar} alt="avatar_image" />
+    }
     ...
   }
 ```
