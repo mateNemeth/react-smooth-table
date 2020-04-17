@@ -85,14 +85,26 @@ Possible props for the column object:
 #### Example for using custom components
 
 ```jsx
-  const columns = {
+  const data = [
+    { id: 1, avatar: 'https://source.unsplash.com/random' }
+    { id: 2, avatar: 'https://source.unsplash.com/random' }
+  ]
+
+  const columns = [
     {
       headerFor: 'avatar',
       title: 'Avatar',
-      component: (rowData) => (rowData.avatar && <img src={rowData.avatar} alt="avatar_image" />
+      component: (rowData) => {
+        return rowData.avatar && (
+          <img
+            src={rowData.avatar}
+            style={{width: '50px', height: '50px', borderRadius: '50%'}}
+            alt="custom_component_avatar"
+          />
+        )
     }
     ...
-  }
+  ]
 ```
 
 ## Editing
