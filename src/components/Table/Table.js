@@ -8,10 +8,10 @@ import { actionTypes } from '../../reducer/action.types';
 import { TinyColor } from '@ctrl/tinycolor';
 
 const OuterContainer = styled.div`
-  max-width: ${props => props.width || '100%'};
+  max-width: ${(props) => props.width || '100%'};
   margin: 0 auto;
-  padding: ${props => props.padding || ''};
-  height: ${props => props.height || ''};
+  padding: ${(props) => props.padding || ''};
+  height: ${(props) => props.height || ''};
 `;
 
 const InnerContainer = styled(OuterContainer)`
@@ -21,8 +21,8 @@ const InnerContainer = styled(OuterContainer)`
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   overflow-x: auto;
   padding: 0;
-  min-height: ${props => props.height || ''};
-  height: ${props => props.height || '100%'};
+  min-height: ${(props) => props.height || ''};
+  height: ${(props) => props.height || '100%'};
 `;
 
 const StyledTable = styled.table`
@@ -41,14 +41,14 @@ const StyledTbody = styled.tbody`
 `;
 
 const StyledTr = styled.tr`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.striped ? (props.stripeBg ? props.stripeBg : '#f5f5f5') : 'white'};
-  color: ${props =>
+  color: ${(props) =>
     props.striped && (props.stripeColor ? props.stripeColor : 'inherit')};
-  cursor: ${props => (props.onClick ? 'pointer' : 'inherit')};
+  cursor: ${(props) => (props.onClick ? 'pointer' : 'inherit')};
 
   &:hover {
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.striped
         ? new TinyColor(props.stripeBg ? props.stripeBg : '#f5f5f5')
             .darken(5)
@@ -58,12 +58,12 @@ const StyledTr = styled.tr`
 `;
 
 const StyledTrHead = styled.tr`
-  background-color: ${props => props.headerBg || '#f5f5f5'};
-  color: ${props => props.headerColor || 'black'};
+  background-color: ${(props) => props.headerBg || '#f5f5f5'};
+  color: ${(props) => props.headerColor || 'black'};
   cursor: pointer;
 `;
 
-const Table = props => {
+const Table = (props) => {
   const {
     columns,
     data,
@@ -79,19 +79,19 @@ const Table = props => {
     editable,
     editComponents,
     onRowClick,
-    onOrder
+    onOrder,
   } = props;
   const [state, dispatch] = useReducer(reducer, {
     columns: columns,
     rows: data,
     orderBy: 'position',
-    order: 'ASC'
+    order: 'ASC',
   });
 
   useEffect(() => {
     dispatch({
       type: actionTypes.POPULATE_DATA,
-      payload: { rows: data, columns: columns }
+      payload: { rows: data, columns: columns },
     });
   }, [columns, data]);
 
@@ -103,21 +103,21 @@ const Table = props => {
    * Creating a new array with the keys allows us to make sure to render the <td>s in the same order as the <th>s
    */
   const generateColumnOrder = () => {
-    return state.columns.map(column => column.headerFor);
+    return state.columns.map((column) => column.headerFor);
   };
 
   /**
    * Function to reorder the rows displayed in the table. It get a 'columName' as argument, and does the ordering
    * based on that column.
    */
-  const orderRowsBy = columnName => {
+  const orderRowsBy = (columnName) => {
     return dispatch({
       type: actionTypes.ORDER_BY,
       payload: {
         orderBy: columnName,
         order: state.order === 'ASC' ? 'DESC' : 'ASC',
-        onOrder: onOrder
-      }
+        onOrder: onOrder,
+      },
     });
   };
 
@@ -135,7 +135,9 @@ const Table = props => {
         >
           {order &&
             order.map((item, idx) => {
-              const orderedData = state.columns.find(o => o.headerFor === item);
+              const orderedData = state.columns.find(
+                (o) => o.headerFor === item
+              );
               return (
                 <TableHeader
                   key={orderedData.headerFor}
@@ -165,7 +167,7 @@ const Table = props => {
             >
               {order.map((item, itemIdx) => {
                 const orderedData = state.columns.find(
-                  o => o.headerFor === item
+                  (o) => o.headerFor === item
                 );
                 return (
                   <TableCell
@@ -176,7 +178,9 @@ const Table = props => {
                     dataIndex={itemIdx}
                     dataLength={order.length}
                   >
-                    {row[item]}
+                    {orderedData.component
+                      ? orderedData.component(row)
+                      : row[item]}
                   </TableCell>
                 );
               })}
@@ -215,7 +219,8 @@ Table.propTypes = {
       headerBackground: PropTypes.string,
       textColor: PropTypes.string,
       headerStyle: PropTypes.shape({}),
-      cellStyle: PropTypes.shape({})
+      cellStyle: PropTypes.shape({}),
+      component: PropTypes.func,
     })
   ).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -223,18 +228,18 @@ Table.propTypes = {
   editComponents: PropTypes.shape({
     onEdit: PropTypes.shape({
       icon: PropTypes.func,
-      callBack: PropTypes.func
+      callBack: PropTypes.func,
     }),
     onAdd: PropTypes.shape({
       icon: PropTypes.func,
-      callBack: PropTypes.func
+      callBack: PropTypes.func,
     }),
     onDelete: PropTypes.shape({
       icon: PropTypes.func,
-      callBack: PropTypes.func
-    })
+      callBack: PropTypes.func,
+    }),
   }),
-  onOrder: PropTypes.func
+  onOrder: PropTypes.func,
 };
 
 Table.defaultProps = {
@@ -243,12 +248,13 @@ Table.defaultProps = {
     {
       headerFor: '',
       title: '',
-      options: {}
-    }
+      component: null,
+      options: {},
+    },
   ],
   data: [],
   editable: false,
-  onOrder: null
+  onOrder: null,
 };
 
 export default Table;

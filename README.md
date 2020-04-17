@@ -80,6 +80,32 @@ Possible props for the column object:
 |textColor|string|Text-color for the header of that column|
 |headerStyle|object|Style object for the header of that column.|
 |cellStyle|object|Style object for every td in that column|
+|component|function|A custom component can be returned from this function. The function itself receives the rowData as argument|
+
+#### Example for using custom components
+
+```jsx
+  const data = [
+    { id: 1, avatar: 'https://source.unsplash.com/random' }
+    { id: 2, avatar: 'https://source.unsplash.com/random' }
+  ]
+
+  const columns = [
+    {
+      headerFor: 'avatar',
+      title: 'Avatar',
+      component: (rowData) => {
+        return rowData.avatar && (
+          <img
+            src={rowData.avatar}
+            style={{width: '50px', height: '50px', borderRadius: '50%'}}
+            alt="custom_component_avatar"
+          />
+        )
+    }
+    ...
+  ]
+```
 
 ## Editing
 

@@ -8,11 +8,23 @@ const columns = [
     headerFor: 'name',
     title: 'Név',
     width: '80px',
-    headerStyle: { minWidth: '80px' }
+    headerStyle: { minWidth: '80px' },
   },
   { headerFor: 'age', title: 'Születési dátum', align: 'right' },
   { headerFor: 'email', title: 'E-mail cím', align: 'right' },
-  { headerFor: 'phone', title: 'Telefonszám', align: 'right' }
+  { headerFor: 'phone', title: 'Telefonszám', align: 'right' },
+  {
+    headerFor: 'image',
+    title: 'Kép',
+    component: (rowData) =>
+      rowData.image && (
+        <img
+          src={rowData.image}
+          data-testid="table-custom-comp"
+          alt="custom_component_image"
+        />
+      ),
+  },
 ];
 
 const data = [
@@ -22,10 +34,11 @@ const data = [
     name: 'Teszt 2',
     age: '2012-12-13',
     email: 'teszt@teszt.teszt',
-    phone: '123456789'
+    phone: '123456789',
   },
   { id: '3', name: 'Teszt 3', age: null, phone: '123456789' },
-  { id: '4', age: '2012-12-15', email: 'teszt@teszt.teszt' }
+  { id: '4', age: '2012-12-15', email: 'teszt@teszt.teszt' },
+  { id: '5', image: 'https://source.unsplash.com/random' },
 ];
 
 afterEach(cleanup);
@@ -50,7 +63,7 @@ describe('Table tests', () => {
 
     expect(elements.length).toBe(columns.length);
 
-    columns.map(column => {
+    columns.map((column) => {
       expect(getByText(column.title)).toBeInTheDocument();
     });
   });
@@ -101,7 +114,15 @@ describe('Table tests', () => {
   });
 
   test('If stripeBg and stripeColor is provided, it should be used for the striped rows', () => {
-    const { getAllByTestId } = render(<Table columns={columns} data={data} striped stripeBg="yellow" stripeColor="green" />);
+    const { getAllByTestId } = render(
+      <Table
+        columns={columns}
+        data={data}
+        striped
+        stripeBg="yellow"
+        stripeColor="green"
+      />
+    );
 
     const rows = getAllByTestId('table-data-row');
     rows.map((row, idx) => {
@@ -109,24 +130,28 @@ describe('Table tests', () => {
         expect(row).toHaveStyle(`background-color: yellow`);
         expect(row).toHaveStyle(`color: green`);
       }
-    })
-  })
+    });
+  });
 
   test('If width prop is provided, table should have that width set as max-width', () => {
-    const {getByTestId} = render(<Table columns={columns} data={data} width='200px' />);
+    const { getByTestId } = render(
+      <Table columns={columns} data={data} width="200px" />
+    );
     const innerContainer = getByTestId('table').parentElement;
     const outerContainer = innerContainer.parentElement;
 
     expect(innerContainer).toHaveStyle(`max-width: 200px`);
     expect(outerContainer).toHaveStyle(`max-width: 200px`);
-  })
+  });
 
-  test('If stickyHeader is prop true, all the th\'s should have sticky position', () => {
-    const { getAllByTestId } = render(<Table columns={columns} data={data} stickyHeader/>);
+  test("If stickyHeader is prop true, all the th's should have sticky position", () => {
+    const { getAllByTestId } = render(
+      <Table columns={columns} data={data} stickyHeader />
+    );
 
     const headerCells = getAllByTestId('table-header-cell');
-    headerCells.map(cell => expect(cell).toHaveStyle(`position: sticky`));
-  })
+    headerCells.map((cell) => expect(cell).toHaveStyle(`position: sticky`));
+  });
 
   test('If editable prop is present, an extra column should be rendered at the first position', () => {
     const { getAllByTestId } = render(<Table columns={columns} editable />);
@@ -134,5 +159,13 @@ describe('Table tests', () => {
     const elements = getAllByTestId('table-header-cell');
 
     expect(elements.length).toBe(columns.length + 1);
+  });
+
+  test('Renders custom component if it is set in the column', () => {
+    const { getAllByTestId } = render(<Table columns={columns} data={data} />);
+
+    const elements = getAllByTestId('table-custom-comp');
+
+    expect(elements.length).toBe(1);
   });
 });
