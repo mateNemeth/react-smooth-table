@@ -35,11 +35,10 @@ const StyledTable = styled.table`
     padding: 16px;
     border-bottom: 1px solid #d9d9d9;
   }
-`;
-
-const StyledTbody = styled.tbody`
   position: relative;
 `;
+
+const StyledTbody = styled.tbody``;
 
 const StyledTr = styled.tr`
   background-color: ${(props) =>
@@ -62,6 +61,12 @@ const StyledTrHead = styled.tr`
   background-color: ${(props) => props.headerBg || '#f5f5f5'};
   color: ${(props) => props.headerColor || 'black'};
   cursor: pointer;
+`;
+
+const StyledTrFooter = styled(StyledTr)`
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;
 
 const Table = (props) => {
@@ -147,70 +152,70 @@ const Table = (props) => {
   const generateTableLayout = () => {
     const order = generateColumnOrder();
     return (
-      <StyledTbody>
-        <StyledTrHead
-          headerBg={headerBg}
-          headerColor={headerColor}
-          data-testid="table-header-row"
-        >
-          {order &&
-            order.map((item, idx) => {
-              const orderedData = state.columns.find(
-                (o) => o.headerFor === item
-              );
-              return (
-                <TableHeader
-                  key={orderedData.headerFor}
-                  orderedData={orderedData}
-                  stickyHeader={stickyHeader}
-                  index={idx}
-                  length={order.length}
-                  orderRowsBy={orderRowsBy}
-                  order={state.order}
-                  orderBy={state.orderBy}
-                >
-                  {orderedData.title}
-                </TableHeader>
-              );
-            })}
-        </StyledTrHead>
-        {state.rows.map((row, rowIdx) => {
-          return (
-            <StyledTr
-              data-testid="table-data-row"
-              key={row.id}
-              id={row.id}
-              striped={striped && rowIdx % 2 !== 0}
-              stripeBg={stripeBg}
-              stripeColor={stripeColor}
-              onClick={onRowClick ? () => onRowClick(row) : null}
-            >
-              {order.map((item, itemIdx) => {
+      <>
+        <StyledTbody>
+          <StyledTrHead
+            headerBg={headerBg}
+            headerColor={headerColor}
+            data-testid="table-header-row"
+          >
+            {order &&
+              order.map((item, idx) => {
                 const orderedData = state.columns.find(
                   (o) => o.headerFor === item
                 );
                 return (
-                  <TableCell
+                  <TableHeader
+                    key={orderedData.headerFor}
                     orderedData={orderedData}
-                    key={Math.random()}
-                    rowIndex={rowIdx}
-                    rowLength={data.length}
-                    dataIndex={itemIdx}
-                    dataLength={order.length}
+                    stickyHeader={stickyHeader}
+                    index={idx}
+                    length={order.length}
+                    orderRowsBy={orderRowsBy}
+                    order={state.order}
+                    orderBy={state.orderBy}
                   >
-                    {orderedData.component
-                      ? orderedData.component(row)
-                      : row[item]}
-                  </TableCell>
+                    {orderedData.title}
+                  </TableHeader>
                 );
               })}
-            </StyledTr>
-          );
-        })}
-        {paginator && (
-          <Paginator currentPage={state.currentPage} changePage={changePage} />
-        )}
-      </StyledTbody>
+          </StyledTrHead>
+
+          {state.rows.map((row, rowIdx) => {
+            return (
+              <StyledTr
+                data-testid="table-data-row"
+                key={row.id}
+                id={row.id}
+                striped={striped && rowIdx % 2 !== 0}
+                stripeBg={stripeBg}
+                stripeColor={stripeColor}
+                onClick={onRowClick ? () => onRowClick(row) : null}
+              >
+                {order.map((item, itemIdx) => {
+                  const orderedData = state.columns.find(
+                    (o) => o.headerFor === item
+                  );
+                  return (
+                    <TableCell
+                      orderedData={orderedData}
+                      key={Math.random()}
+                      rowIndex={rowIdx}
+                      rowLength={data.length}
+                      dataIndex={itemIdx}
+                      dataLength={order.length}
+                    >
+                      {orderedData.component
+                        ? orderedData.component(row)
+                        : row[item]}
+                    </TableCell>
+                  );
+                })}
+              </StyledTr>
+            );
+          })}
+        </StyledTbody>
+      </>
     );
   };
 
@@ -221,6 +226,9 @@ const Table = (props) => {
           {generateTableLayout()}
         </StyledTable>
       </InnerContainer>
+      {paginator && (
+        <Paginator currentPage={state.currentPage} changePage={changePage} />
+      )}
     </OuterContainer>
   );
 };

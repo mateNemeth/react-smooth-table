@@ -21,12 +21,6 @@ const initialState = {
   currentPage: 1,
 };
 
-const generateRowsData = (rawData, paginator, perPageCount) => {
-  if (!paginator) return rawData;
-
-  return rawData.slice(0, perPageCount);
-};
-
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_EDIT:
@@ -101,16 +95,23 @@ export const reducer = (state = initialState, action) => {
         currentPage: 1,
         editAdded: false,
       });
+
     case actionTypes.CHANGE_PAGE:
-      console.log(action.payload);
       const { targetPage } = action.payload;
+      const nextPage = () => {
+        const max = Math.ceil(state.totalCount / state.perPageCount);
+        if (targetPage < 2) return 1;
+        if (targetPage > max) return max;
+        return targetPage;
+      };
+
       return (state = {
         ...state,
         rows: state.rawData.slice(
-          (targetPage - 1) * state.perPageCount,
-          targetPage * state.perPageCount
+          (nextPage() - 1) * state.perPageCount,
+          nextPage() * state.perPageCount
         ),
-        currentPage: targetPage,
+        currentPage: nextPage(),
       });
     default:
       return state;

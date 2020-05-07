@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Root = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-`;
-
 const Paginator = ({ currentPage, changePage }) => {
+  const Root = styled.tfoot`
+    display: table-footer-group;
+    /* position: fixed;
+    bottom: 0; */
+  `;
+
   const prevPage = () => {
     changePage(currentPage - 1);
   };
@@ -17,8 +18,19 @@ const Paginator = ({ currentPage, changePage }) => {
   };
   return (
     <Root>
-      <span onClick={prevPage}>{'<'}</span>
-      <span onClick={nextPage}>{'>'}</span>
+      <tr>
+        <td colSpan="999">
+          <div style={{ width: '100%' }}>
+            <span style={{ marginRight: '8px' }} onClick={prevPage}>
+              {'<'}
+            </span>
+            <span>{currentPage}</span>
+            <span style={{ marginLeft: '8px' }} onClick={nextPage}>
+              {'>'}
+            </span>
+          </div>
+        </td>
+      </tr>
     </Root>
   );
 };

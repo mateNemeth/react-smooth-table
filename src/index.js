@@ -35,7 +35,8 @@ ReactDOM.render(
       data={data}
       paginator={true}
       totalCount={data.length}
-      perPageCount={5}
+      perPageCount={10}
+      stickyHeader
     />
   </React.StrictMode>,
   document.getElementById('root')
