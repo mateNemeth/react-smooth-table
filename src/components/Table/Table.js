@@ -6,6 +6,7 @@ import TableCell from '../TableCell/TableCell';
 import { reducer } from '../../reducer/reducer';
 import { actionTypes } from '../../reducer/action.types';
 import { TinyColor } from '@ctrl/tinycolor';
+import Paginator from '../Paginator/Paginator';
 
 const OuterContainer = styled.div`
   max-width: ${(props) => props.width || '100%'};
@@ -80,6 +81,9 @@ const Table = (props) => {
     editComponents,
     onRowClick,
     onOrder,
+    paginator,
+    totalCount,
+    perPageCount,
   } = props;
   const [state, dispatch] = useReducer(reducer, {
     columns: columns,
@@ -91,9 +95,15 @@ const Table = (props) => {
   useEffect(() => {
     dispatch({
       type: actionTypes.POPULATE_DATA,
-      payload: { rows: data, columns: columns },
+      payload: {
+        rawData: data,
+        columns: columns,
+        paginator,
+        totalCount,
+        perPageCount,
+      },
     });
-  }, [columns, data]);
+  }, [columns, data, paginator, perPageCount, totalCount]);
 
   if (editable && !state.editAdded) {
     dispatch({ type: actionTypes.ADD_EDIT, payload: { ...editComponents } });
@@ -117,6 +127,16 @@ const Table = (props) => {
         orderBy: columnName,
         order: state.order === 'ASC' ? 'DESC' : 'ASC',
         onOrder: onOrder,
+      },
+    });
+  };
+
+  const changePage = (targetPage) => {
+    console.log(targetPage);
+    return dispatch({
+      type: actionTypes.CHANGE_PAGE,
+      payload: {
+        targetPage,
       },
     });
   };
@@ -187,6 +207,9 @@ const Table = (props) => {
             </StyledTr>
           );
         })}
+        {paginator && (
+          <Paginator currentPage={state.currentPage} changePage={changePage} />
+        )}
       </StyledTbody>
     );
   };
@@ -240,6 +263,9 @@ Table.propTypes = {
     }),
   }),
   onOrder: PropTypes.func,
+  paginator: PropTypes.bool,
+  totalCount: PropTypes.number,
+  perPageCount: PropTypes.number,
 };
 
 Table.defaultProps = {
@@ -255,6 +281,9 @@ Table.defaultProps = {
   data: [],
   editable: false,
   onOrder: null,
+  paginator: false,
+  totalCount: null,
+  perPageCount: null,
 };
 
 export default Table;
