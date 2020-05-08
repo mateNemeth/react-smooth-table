@@ -19,7 +19,7 @@ const Paginator = ({ currentPage, changePage }) => {
   return (
     <Root>
       <tr>
-        <td colSpan="999">
+        <td colSpan="9999">
           <div style={{ width: '100%' }}>
             <span style={{ marginRight: '8px' }} onClick={prevPage}>
               {'<'}
