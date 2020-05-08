@@ -10,20 +10,24 @@ import Paginator from '../Paginator/Paginator';
 
 const OuterContainer = styled.div`
   max-width: ${(props) => props.width || '100%'};
+  box-sizing: border-box;
   margin: 0 auto;
   padding: ${(props) => props.padding || ''};
   height: ${(props) => props.height || ''};
-`;
-
-const InnerContainer = styled(OuterContainer)`
+  position: relative;
   border-radius: 4px;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  overflow-x: auto;
+`;
+
+const InnerContainer = styled(OuterContainer)`
+  box-shadow: none;
+  overflow: auto;
   padding: 0;
   min-height: ${(props) => props.height || ''};
   height: ${(props) => props.height || '100%'};
+  position: static;
 `;
 
 const StyledTable = styled.table`
@@ -61,12 +65,6 @@ const StyledTrHead = styled.tr`
   background-color: ${(props) => props.headerBg || '#f5f5f5'};
   color: ${(props) => props.headerColor || 'black'};
   cursor: pointer;
-`;
-
-const StyledTrFooter = styled(StyledTr)`
-  position: absolute;
-  bottom: 0;
-  right: 0;
 `;
 
 const Table = (props) => {
@@ -221,7 +219,10 @@ const Table = (props) => {
 
   return (
     <OuterContainer width={width} height={height} padding={padding}>
-      <InnerContainer width={width}>
+      <InnerContainer
+        width={width}
+        height={paginator ? `calc(${height} - 30px)` : height}
+      >
         <StyledTable width={width} data-testid="table">
           {generateTableLayout()}
         </StyledTable>

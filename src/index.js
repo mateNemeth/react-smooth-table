@@ -2,7 +2,6 @@
 
 // export { Table };
 
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Table from './components/Table/Table';
@@ -36,7 +35,7 @@ ReactDOM.render(
       data={data}
       paginator={true}
       totalCount={data.length}
-      perPageCount={10}
+      perPageCount={5}
       stickyHeader
     />
   </React.StrictMode>,
