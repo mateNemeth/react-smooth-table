@@ -1,6 +1,6 @@
 {
   "name": "react-smooth-table",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
@@ -18,7 +18,7 @@
     "test": "react-scripts test",
     "coverage": "react-scripts test --env=jsdom --watchAll=false --coverage",
     "eject": "react-scripts eject",
-    "publish:npm": "rm -rf dist && mkdir dist &&  babel ./src/components -d dist --copy-files"
+    "publish:npm": "npm run clean && cross-env NODE_ENV=production babel src/ --out-dir dist --copy-files --ignore _tests_,spec.js,test.js,stories.js,__snapshots__"
   },
   "eslintConfig": {
     "extends": "react-app"
